@@ -124,5 +124,9 @@ if (!PlayerzSDK()) {
     self.didMoveLocation = CGPointMake(self.left, self.superview.height - self.bottom);
 }
 
+void PlayerzSDK() {
+    // Bu funksiya hələlik boşdur.
+    // Əgər oyunun yaddaşını oxuyursa, bura əlavə edilməlidir.
+}
 
 @end
