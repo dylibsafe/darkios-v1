@@ -10,12 +10,11 @@ TWEAK_NAME = M7MD
 
 M7MD_FRAMEWORKS = IOKit UIKit Foundation Security QuartzCore CoreGraphics CoreText AVFoundation Accelerate GLKit SystemConfiguration GameController JRMemory
 
-M7MD_LIBRARIES = c++ objc z
+# Kitabxanalar (lua əlavə edildi)
+M7MD_LIBRARIES = c++ objc z lua
 
 M7MD_CFLAGS += -I/opt/theos/include
 M7MD_LDFLAGS += -F. -framework JRMemory
-
-# YALNIZ API kitabxanası
 M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/API -lAPIClient
 
 M7MD_CCFLAGS = -w -std=gnu++14 -fno-rtti -fno-exceptions -DNDEBUG -Wno-module-import-in-extern-c
