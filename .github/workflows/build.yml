@@ -1,53 +1,36 @@
-name: Build Dylib
+name: Build Tweak
 
 on:
   push:
-    branches: [ "main" ]
-  workflow_dispatch: 
+    branches: [ "main" ] # Sadece main dalında çalışır
+  workflow_dispatch: # Actions sekmesinden manuel çalıştırmaya izin verir
 
 jobs:
   build:
-    runs-on: macos-latest
-    permissions:
-      contents: write
+    runs-on: macos-latest # Theos için macOS sunucusu gerekli
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: 1. Kodu Repodan Çek
+        uses: actions/checkout@v4
 
-    - name: Setup Theos and Tools
-      run: |
-        export THEOS=$HOME/theos
-        if [ ! -d "$THEOS" ]; then
-          git clone --recursive https://github.com/theos/theos.git $THEOS
-        fi
-        echo "THEOS=$THEOS" >> $GITHUB_ENV
-        
-        curl -L -o /usr/local/bin/ldid https://github.com/ProcursusTeam/ldid/releases/latest/download/ldid_macosx_arm64
-        sudo chmod +x /usr/local/bin/ldid
-        ldid -v || true
+      - name: 2. Theos'u Kur
+        uses: Randomblock1/theos-action@v1
+        with:
+          theos-sdks: 'https://github.com/theos/sdks'
 
-    - name: Download iOS SDK
-      run: |
-        if [ ! -d "$THEOS/sdks" ]; then
-          git clone --depth 1 https://github.com/theos/sdks.git $THEOS/sdks
-        fi
+      - name: 3. Projeyi Derle (Paket Oluştur)
+        run: |
+          make clean
+          make package FINALPACKAGE=1
 
-    - name: Compile Tweak
-      run: |
-        make clean || true
-        make package FINALPACKAGE=1
-
-    - name: Find and Copy Dylib to Root
-      run: |
-        # .dylib faylını tapıb əsas qovluğa çıxarırıq
-        find . -name "*.dylib" -exec cp {} ./M7MD.dylib \;
-        ls -la M7MD.dylib
-
-    - name: Commit and Push Dylib
-      run: |
-        git config --global user.name 'GitHub Action'
-        git config --global user.email 'action@github.com'
-        git add -f M7MD.dylib
-        git commit -m "Auto-build: Added M7MD.dylib" || true
-        git push
+      - name: 4. Derlenen Dosyaları (Deb ve Dylib) Yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: derlenmis-tweak
+          # Hem .deb paketini hem de .dylib dosyasını paketler
+          path: |
+            packages/*.deb
+            .theos/obj/**/*.dylib
+            *.dylib
+          # Eğer dosya bulunamazsa işlemin başarısız sayılmaması için:
+          if-no-files-found: warn
