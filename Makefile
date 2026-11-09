@@ -8,18 +8,15 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = M7MD
 
-# Framework-lər (JRMemory buradan çıxarıldı, çünki linker onu tapa bilmir)
-M7MD_FRAMEWORKS = IOKit UIKit Foundation Security QuartzCore CoreGraphics CoreText AVFoundation Accelerate GLKit SystemConfiguration GameController
+# Framework-lər (JRMemory framework olaraq qaytarıldı)
+M7MD_FRAMEWORKS = IOKit UIKit Foundation Security QuartzCore CoreGraphics CoreText AVFoundation Accelerate GLKit SystemConfiguration GameController JRMemory
 
 # Kitabxanalar
 M7MD_LIBRARIES = c++ objc z
 
 # Framework və kitabxana yolları
 M7MD_CFLAGS += -I/opt/theos/include
-M7MD_LDFLAGS += -F$(THEOS_PROJECT_DIR)
-
-# JRMemory.framework-ün içindəki MemScan binary faylını birbaşa qoşuruq
-M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/JRMemory.framework -lMemScan
+M7MD_LDFLAGS += -F$(THEOS_PROJECT_DIR) -framework JRMemory
 
 # API kitabxanası
 M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/API -lAPIClient
