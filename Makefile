@@ -15,12 +15,16 @@ M7MD_LIBRARIES = c++ objc z
 M7MD_CFLAGS += -I/opt/theos/include
 M7MD_LDFLAGS += -F. -framework JRMemory
 
-# YALNIZ API kitabxanası (PUBGHookDylib3 TAMAMİLƏ SİLİNDİ)
+# YALNIZ API kitabxanası
 M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/API -lAPIClient
 
 M7MD_CCFLAGS = -w -std=gnu++14 -fno-rtti -fno-exceptions -DNDEBUG -Wno-module-import-in-extern-c
 M7MD_CFLAGS = -w -fobjc-arc -Wno-deprecated-declarations -Wno-unused-variable -Wno-unused-value
 
 M7MD_FILES = $(wildcard Menux/*.mm)$(wildcard 菜单/*.mm) $(wildcard View/*.mm) $(wildcard CustomView/*.m) $(wildcard utils/*.cpp) $(wildcard utils/*.m) $(wildcard imgui/*.mm) $(wildcard imgui/*.cpp) $(wildcard ESP/*.mm) $(wildcard ESP/*.cpp) $(wildcard SDK/*.cpp) $(wildcard NSURL+hook/*.h) $(wildcard NSURL+hook/*.m) $(wildcard MBProgressHUD/*.m) $(wildcard FCFileManager/*.m) $(wildcard NSEtcHosts/*.m) $(wildcard AppDelegate/*.h) $(wildcard ZXRequestBlock/*.h) $(wildcard DBLOCKRASHID/*.m) $(wildcard ZXURLProtocol/*.m) $(wildcard ZXURLProtocol/*.h) $(wildcard EtcHostsURLProtocol/*.m) $(wildcard MBProgressHUD/*.m) $(wildcard NSObject+URL/*.m) $(wildcard NSURL+hook/*.m) $(wildcard MBProgressHUD/*.h) $(wildcard FCFileManager/*.h) $(wildcard ViewController/*.m) $(wildcard ZXHttpIPGet/*.m) $(wildcard NSURLSession+ZXHttpProxy/*.m) $(wildcard EtcHostsURLProtocol/*.h) $(wildcard ZXURLProtocol/*.m) $(wildcard NSURLSession+ZXHttpProxy/*.h) $(wildcard main/*.m) $(wildcard ZXHttpIPGet/*.h) $(wildcard NSURL+hook/*.h) $(wildcard ViewController/*.h) $(wildcard NSObject+URL/*.h) $(wildcard 旁路/*.mm) $(wildcard behaviorbypassforESP/*.h) $(wildcard View/*.m) 
+
+# Lua fayllarını resurs kimi əlavə edirik
+M7MD_RESOURCE_FILES = bypass.lua skin.lua
+M7MD_INSTALL_PATH = /Library/Application Support/M7MD/
 
 include $(THEOS_MAKE_PATH)/tweak.mk
