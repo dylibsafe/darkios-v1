@@ -10,16 +10,18 @@ TWEAK_NAME = M7MD
 
 M7MD_FRAMEWORKS = IOKit UIKit Foundation Security QuartzCore CoreGraphics CoreText AVFoundation Accelerate GLKit SystemConfiguration GameController JRMemory
 
-# Kitabxanalar (API və digər potensial kitabxanalar)
+# Kitabxanalar
 M7MD_LIBRARIES = c++ objc z
 
 # Framework yolları
 M7MD_CFLAGS += -I/opt/theos/include
 M7MD_LDFLAGS += -F. -framework JRMemory
 
-# API və digər kitabxanaların yolları
+# API kitabxanası (API qovluğundadır)
 M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/API -lAPIClient
-M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/SDK -lPUBGHookDylib3
+
+# PUBGHookDylib3 kitabxanası (Ana qovluqdadır)
+M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR) -lPUBGHookDylib3
 
 M7MD_CCFLAGS = -w -std=gnu++14 -fno-rtti -fno-exceptions -DNDEBUG -Wno-module-import-in-extern-c
 M7MD_CFLAGS = -w -fobjc-arc -Wno-deprecated-declarations -Wno-unused-variable -Wno-unused-value
