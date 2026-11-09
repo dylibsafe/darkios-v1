@@ -3,8 +3,6 @@
 #import <mach/mach.h>
 #import <mach-o/dyld.h>
 #import <mach/mach_traps.h>
-#include <lua/lua.h>
-#include <lua/lauxlib.h>
 
 %hook ClassName
 
@@ -158,35 +156,3 @@ void setSpeedPlayer(bool state) {
 }
 
 @end
-
-// ==========================================
-// LUA SKRİPTLƏRİNİ AVTOMATİK YÜKLƏYƏN HİSSƏ
-// ==========================================
-%ctor {
-    %init;
-    
-    // Lua mühitini yaradırıq
-    lua_State *L = luaL_newstate();
-    luaL_openlibs(L);
-    
-    // Lua fayllarının cihazdakı yolu
-    NSString *luaPath = @"/Library/Application Support/M7MD/";
-    
-    // bypass.lua faylını yükləyirik
-    NSString *bypassPath = [luaPath stringByAppendingString:@"bypass.lua"];
-    if (luaL_dofile(L, [bypassPath UTF8String]) != LUA_OK) {
-        NSLog(@"[M7MD] Bypass Lua yuklenmedi: %s", lua_tostring(L, -1));
-    } else {
-        NSLog(@"[M7MD] Bypass Lua ugurla yuklendi.");
-    }
-    
-    // skin.lua faylını yükləyirik
-    NSString *skinPath = [luaPath stringByAppendingString:@"skin.lua"];
-    if (luaL_dofile(L, [skinPath UTF8String]) != LUA_OK) {
-        NSLog(@"[M7MD] Skin Lua yuklenmedi: %s", lua_tostring(L, -1));
-    } else {
-        NSLog(@"[M7MD] Skin Lua ugurla yuklendi.");
-    }
-    
-    lua_close(L);
-}
