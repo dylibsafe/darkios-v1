@@ -15,11 +15,8 @@ M7MD_LIBRARIES = c++ objc z
 M7MD_CFLAGS += -I/opt/theos/include
 M7MD_LDFLAGS += -F. -framework JRMemory
 
-# API kitabxanası
+# YALNIZ API kitabxanası (PUBGHookDylib3 TAMAMİLƏ SİLİNDİ)
 M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/API -lAPIClient
-
-# SDK qovluğundakı kitabxanalar (əgər varsa)
-M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/SDK -lPUBGHookDylib3
 
 M7MD_CCFLAGS = -w -std=gnu++14 -fno-rtti -fno-exceptions -DNDEBUG -Wno-module-import-in-extern-c
 M7MD_CFLAGS = -w -fobjc-arc -Wno-deprecated-declarations -Wno-unused-variable -Wno-unused-value
