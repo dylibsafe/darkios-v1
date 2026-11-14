@@ -18,7 +18,7 @@ jobs:
           make
 
       - name: Upload Dylib Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: M7MD-Dylib
           path: .theos/obj/arm64/M7MD.dylib
