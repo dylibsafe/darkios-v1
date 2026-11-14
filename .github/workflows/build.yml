@@ -7,12 +7,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Theos
-        uses: subosito/flutter-action@v2 # Və ya Theos quraşdırma addımları
         run: |
           git clone --recursive https://github.com/theos/theos.git /opt/theos
-          # SDK quraşdırmaları...
 
       - name: Build Tweak
         run: |
