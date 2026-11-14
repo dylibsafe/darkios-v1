@@ -1,53 +1,26 @@
 name: Build Dylib
 
-on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch: 
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: macos-latest
-    permissions:
-      contents: write
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      
+      - name: Setup Theos
+        uses: subosito/flutter-action@v2 # Və ya Theos quraşdırma addımları
+        run: |
+          git clone --recursive https://github.com/theos/theos.git /opt/theos
+          # SDK quraşdırmaları...
 
-    - name: Setup Theos and Tools
-      run: |
-        export THEOS=$HOME/theos
-        if [ ! -d "$THEOS" ]; then
-          git clone --recursive https://github.com/theos/theos.git $THEOS
-        fi
-        echo "THEOS=$THEOS" >> $GITHUB_ENV
-        
-        curl -L -o /usr/local/bin/ldid https://github.com/ProcursusTeam/ldid/releases/latest/download/ldid_macosx_arm64
-        sudo chmod +x /usr/local/bin/ldid
-        ldid -v || true
+      - name: Build Tweak
+        run: |
+          make clean
+          make
 
-    - name: Download iOS SDK
-      run: |
-        if [ ! -d "$THEOS/sdks" ]; then
-          git clone --depth 1 https://github.com/theos/sdks.git $THEOS/sdks
-        fi
-
-    - name: Compile Tweak
-      run: |
-        make clean || true
-        make package FINALPACKAGE=1
-
-    - name: Find and Copy Dylib to Root
-      run: |
-        # .dylib faylını tapıb əsas qovluğa çıxarırıq
-        find . -name "*.dylib" -exec cp {} ./M7MD.dylib \;
-        ls -la M7MD.dylib
-
-    - name: Commit and Push Dylib
-      run: |
-        git config --global user.name 'GitHub Action'
-        git config --global user.email 'action@github.com'
-        git add -f M7MD.dylib
-        git commit -m "Auto-build: Added M7MD.dylib" || true
-        git push
+      - name: Upload Dylib Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: M7MD-Dylib
+          path: .theos/obj/arm64/M7MD.dylib
