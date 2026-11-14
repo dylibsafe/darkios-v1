@@ -1,3 +1,4 @@
+TARGET := iphone:clang:latest:15.0
 ARCHS = arm64
 DEBUG = 0
 FINALPACKAGE = 1
@@ -14,14 +15,14 @@ M7MD_FRAMEWORKS = IOKit UIKit Foundation Security QuartzCore CoreGraphics CoreTe
 # Kitabxanalar
 M7MD_LIBRARIES = c++ objc z
 
-# Yollar və bayraqlar
+# Yollar və kompilyasiya bayraqları
 M7MD_CFLAGS = -w -fobjc-arc -std=gnu++14 -fno-rtti -fno-exceptions -DNDEBUG -I/opt/theos/include -I.
 M7MD_CCFLAGS = -w -std=gnu++14 -fno-rtti -fno-exceptions -DNDEBUG -Wno-module-import-in-extern-c
 
 M7MD_LDFLAGS += -F$(THEOS_PROJECT_DIR) -framework JRMemory
 M7MD_LDFLAGS += -L$(THEOS_PROJECT_DIR)/API -lAPIClient
 
-# Yalnız kompilyasiya olunan mənbə faylları (.m, .mm, .cpp)
+# Mənbə faylları (Wildcard vasitəsilə avtomatik yığılır)
 M7MD_FILES = $(wildcard View/*.mm) \
              $(wildcard View/*.m) \
              $(wildcard CustomView/*.m) \
